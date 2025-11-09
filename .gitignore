@@ -1,0 +1,45 @@
+# === Arquivos de compilação ===
+*.o
+*.obj
+*.so
+*.a
+*.exe
+*.out
+*.dll
+
+# === Diretórios de build ===
+/build/
+/bin/
+/dist/
+/debug/
+/release/
+
+# === Arquivos temporários do sistema ===
+*.log
+*.tmp
+*.swp
+*.bak
+*~
+
+# === Arquivos gerados por IDEs ===
+# Visual Studio
+.vs/
+*.vcxproj*
+*.sln
+
+# CLion / JetBrains
+.idea/
+cmake-build*/
+
+# Code::Blocks
+*.cbp
+*.layout
+*.depend
+
+# VSCode
+.vscode/
+
+# === Outros ===
+.DS_Store
+Thumbs.db
+

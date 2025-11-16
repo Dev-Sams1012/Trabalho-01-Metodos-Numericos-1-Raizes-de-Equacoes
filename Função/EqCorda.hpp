@@ -30,6 +30,10 @@ public:
     double df_num(double d, double h) const{
         return (f(d + h) - f(d)) / h;
     }
+
+    void printEqcorda(){
+        printf("%.3lf*d^3 - 9*%.3lf*d + 3", a3, a2);
+    }
 };
 
 #endif

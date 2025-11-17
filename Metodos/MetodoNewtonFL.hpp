@@ -1,7 +1,7 @@
 #ifndef METODO_NEWTON_F_L_HPP
 #define METODO_NEWTON_F_L_HPP
 #include <bits/stdc++.h>
-#include "../Função/EqCorda.hpp"
+#include "../Funcao/EqCorda.hpp"
 
 using namespace std;
 

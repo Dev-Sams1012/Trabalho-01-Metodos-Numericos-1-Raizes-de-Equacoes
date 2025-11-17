@@ -1,6 +1,6 @@
 #include <bits/stdc++.h>
-#include "Métodos/MetodoNewton.hpp"
-#include "Métodos/MetodoNewtonFL.hpp"
+#include "Metodos/MetodoNewton.hpp"
+#include "Metodos/MetodoNewtonFL.hpp"
 #include <functional>
 
 using namespace std;

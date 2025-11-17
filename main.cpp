@@ -5,9 +5,8 @@
 
 using namespace std;
 
-
-
-void resultados(double d, EqCorda &p, double eps,string metodo){
+void resultados(double d, EqCorda &p, double eps, string metodo)
+{
     cout << "-----------------------------------------------------------------\n";
     printf("RESULTADOS PARA CALCULAR d USANDO O METODO %s\n", metodo.c_str());
     cout << "f(d) = ";
@@ -18,34 +17,55 @@ void resultados(double d, EqCorda &p, double eps,string metodo){
     cout << "-----------------------------------------------------------------\n";
 }
 
-void executaMetodoNewton(function<double(double, EqCorda& , double, int)> metodo, 
-                        double d, EqCorda &p, double eps, int itMax, bool usa_dfnum){
-    double raiz = metodo(d , p, eps, itMax);
-    if(usa_dfnum){
+void executaMetodoNewton(function<double(double, EqCorda &, double, int)> metodo,
+                         double d, EqCorda &p, double eps, int itMax, bool usa_dfnum)
+{
+    double raiz = metodo(d, p, eps, itMax);
+    if (usa_dfnum)
+    {
         resultados(raiz, p, eps, "NEWTON-RAPHSON PADRAO COM DERIVADA NUMERICA");
     }
-    else{ 
+    else
+    {
         resultados(raiz, p, eps, "NEWTON-RAPHSON PADRAO");
     }
-    
-
 }
 
-void executaMetodoNewtonFL(function<double(double, EqCorda&, double, double, int)> metodo, 
-                        double d, EqCorda &p, double eps,double lbd, int itMax){
-    double raiz = metodo(d , p, eps, lbd, itMax);
+void executaMetodoNewtonFL(function<double(double, EqCorda &, double, double, int)> metodo,
+                           double d, EqCorda &p, double eps, double lbd, int itMax)
+{
+    double raiz = metodo(d, p, eps, lbd, itMax);
     resultados(raiz, p, eps, "NEWTON-RAPHSON FL");
-    
 }
-
-
-
-
-
 
 int main()
 {
     EqCorda p = EqCorda(1.0, 1.0);
+
+    while(true){
+        cout << "Atividade 03 - Metodos Numericos 1 - Oscilacao de uma Corda Elastica.\n";
+        cout << "Digite o numero de opcoes ( lambda ): ";
+
+        int labmda;
+        cin >> labmda;
+
+        vector<map<int,int>> dados;
+
+        for(int i = 0; i < labmda; i++){
+            map<int, int> dados_local;
+            int a2_local;
+            int a3_local;
+            cout << "\nPara lambda: " << i+1 << " faca:\n";
+            cout << "Valor de a2: ";
+            cin >> a2_local;
+            cout << "Valor de a3: ";
+            cin >> a3_local;
+        }
+
+
+        break;
+        
+    }
 
     cout << "Item A)\n";
     executaMetodoNewton(metodoNewton, 0.5, p, 0.0001, 10000, false);

@@ -11,10 +11,10 @@ private:
     double a2;
 
 public:
-    EqCorda(double a3, double a2)
+    EqCorda(double A3, double A2)
     {
-        this->a3 = a3;
-        this->a2 = a2;
+        this->a3 = A3;
+        this->a2 = A2;
     }
 
     double f(double d) const

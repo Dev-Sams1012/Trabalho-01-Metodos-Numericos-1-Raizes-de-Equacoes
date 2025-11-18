@@ -2,6 +2,7 @@
 #include "Metodos/MetodoNewton.hpp"
 #include "Metodos/MetodoNewtonFL.hpp"
 #include <functional>
+#include <tuple>
 
 using namespace std;
 
@@ -40,42 +41,52 @@ void executaMetodoNewtonFL(function<double(double, EqCorda &, double, double, in
 
 int main()
 {
-    EqCorda p = EqCorda(1.0, 1.0);
 
-    while(true){
+    while (true)
+    {
         cout << "Atividade 03 - Metodos Numericos 1 - Oscilacao de uma Corda Elastica.\n";
-        cout << "Digite o numero de opcoes ( lambda ): ";
+        cout << "Digite o numero de opcoes ( n ): ";
 
-        int labmda;
-        cin >> labmda;
+        int n;
+        cin >> n;
 
-        vector<map<int,int>> dados;
+        vector<tuple<int, int, int>> dados;
 
-        for(int i = 0; i < labmda; i++){
-            map<int, int> dados_local;
-            int a2_local;
-            int a3_local;
-            cout << "\nPara lambda: " << i+1 << " faca:\n";
+        for (int i = 0; i < n; i++)
+        {
+            double lambda_local;
+            double a2_local;
+            double a3_local;
+
+            cout << "\nPara n: " << i + 1 << " faca:\n";
+            cout << "Valor de lambda: ";
+            cin >> lambda_local;
             cout << "Valor de a2: ";
             cin >> a2_local;
             cout << "Valor de a3: ";
             cin >> a3_local;
+
+            tuple<int, int, int> tupla_local = make_tuple(lambda_local, a2_local, a3_local);
+            dados.push_back(tupla_local);
         }
 
+        for (vector<int>::size_type i = 0; i < dados.size(); i++)
+        {
+            EqCorda p = EqCorda(get<1>(dados[i]), get<2>(dados[i]));
+
+            cout << "\n";
+            executaMetodoNewton(metodoNewton, 0.5, p, 0.0001, 10000, false);
+            printf("\n\n\n");
+            cout << "\n";
+            executaMetodoNewtonFL(metodoNewtonFL, 0.5, p, 0.0001, get<0>(dados[i]), 10000);
+            printf("\n\n\n");
+            cout << "\n";
+            executaMetodoNewton(metodoNewtonDdxNum, 0.5, p, 0.0001, 10000, true);
+            printf("\n\n\n");
+        }
 
         break;
-        
     }
-
-    cout << "Item A)\n";
-    executaMetodoNewton(metodoNewton, 0.5, p, 0.0001, 10000, false);
-    printf("\n\n\n");
-    cout << "Item B)\n";
-    executaMetodoNewtonFL(metodoNewtonFL, 0.5, p, 0.0001, 0.05, 10000);
-    printf("\n\n\n");
-    cout << "Item C)\n";
-    executaMetodoNewton(metodoNewtonDdxNum, 0.5, p, 0.0001, 10000, true);
-    printf("\n\n\n");
 
     return 0;
 }

@@ -70,18 +70,28 @@ int main()
             dados.push_back(tupla_local);
         }
 
+        cout << "Digite o valor de epsilon: ";
+
+        double eps;
+        cin >> eps;
+
+        cout << "Digite o máximo de iterações: ";
+
+        int maxIter;
+        cin >> maxIter;
+
         for (vector<int>::size_type i = 0; i < dados.size(); i++)
         {
             EqCorda p = EqCorda(get<1>(dados[i]), get<2>(dados[i]));
 
             cout << "\n";
-            executaMetodoNewton(metodoNewton, 0.5, p, 0.0001, 10000, false);
+            executaMetodoNewton(metodoNewton, 0.5, p, eps, maxIter, false);
             printf("\n\n\n");
             cout << "\n";
-            executaMetodoNewtonFL(metodoNewtonFL, 0.5, p, 0.0001, get<0>(dados[i]), 10000);
+            executaMetodoNewtonFL(metodoNewtonFL, 0.5, p, eps, get<0>(dados[i]), maxIter);
             printf("\n\n\n");
             cout << "\n";
-            executaMetodoNewton(metodoNewtonDdxNum, 0.5, p, 0.0001, 10000, true);
+            executaMetodoNewton(metodoNewtonDdxNum, 0.5, p, eps, maxIter, true);
             printf("\n\n\n");
         }
 

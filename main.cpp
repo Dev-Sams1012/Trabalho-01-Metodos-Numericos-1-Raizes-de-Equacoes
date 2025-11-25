@@ -1,42 +1,39 @@
 #include <bits/stdc++.h>
 #include "Metodos/MetodoNewton.hpp"
+#include "Metodos/MetodoNewtonDdxNum.hpp"
 #include "Metodos/MetodoNewtonFL.hpp"
 #include <functional>
 #include <tuple>
 
 using namespace std;
 
-void resultados(double d, EqCorda &p, double eps, string metodo)
+void resultados(double d, EqCorda &p, double eps, string metodo, string extra)
 {
     cout << "-----------------------------------------------------------------\n";
-    printf("RESULTADOS PARA CALCULAR d USANDO O METODO %s\n", metodo.c_str());
+    cout << "RESULTADOS PARA CALCULAR d USANDO O METODO " << metodo << "\n";
     cout << "f(d) = ";
     p.printEqcorda();
     cout << endl;
+
+    if (!extra.empty())
+        cout << extra << endl;
+
     printf("epsilon = %lf\n", eps);
     printf("raiz aproximada = %lf\n", d);
     cout << "-----------------------------------------------------------------\n";
 }
 
-void executaMetodoNewton(function<double(double, EqCorda &, double, int)> metodo,
-                         double d, EqCorda &p, double eps, int itMax, bool usa_dfnum)
+void executaMetodoNewton(MetodoNewtonAbstrato *metodo)
 {
-    double raiz = metodo(d, p, eps, itMax);
-    if (usa_dfnum)
-    {
-        resultados(raiz, p, eps, "NEWTON-RAPHSON PADRAO COM DERIVADA NUMERICA");
-    }
-    else
-    {
-        resultados(raiz, p, eps, "NEWTON-RAPHSON PADRAO");
-    }
-}
+    double raiz = metodo->executaMetodo();
 
-void executaMetodoNewtonFL(function<double(double, EqCorda &, double, double, int)> metodo,
-                           double d, EqCorda &p, double eps, double lbd, int itMax)
-{
-    double raiz = metodo(d, p, eps, lbd, itMax);
-    resultados(raiz, p, eps, "NEWTON-RAPHSON FL");
+    resultados(
+        raiz,
+        metodo->getEq(),
+        metodo->getEps(),
+        metodo->nomeMetodo(),
+        metodo->infoExtra()
+    );
 }
 
 int main()
@@ -83,15 +80,17 @@ int main()
         for (vector<int>::size_type i = 0; i < dados.size(); i++)
         {
             EqCorda p = EqCorda(get<1>(dados[i]), get<2>(dados[i]));
+            double lambda = get<0>(dados[i]);
 
             cout << "\n";
-            executaMetodoNewton(metodoNewton, 0.5, p, eps, maxIter, false);
+            MetodoNewton metodoNewton = MetodoNewton(maxIter, 0.5, p, eps);
+            executaMetodoNewton(&metodoNewton);
             printf("\n\n\n");
-            cout << "\n";
-            executaMetodoNewtonFL(metodoNewtonFL, 0.5, p, eps, get<0>(dados[i]), maxIter);
+            MetodoNewtonDdxNum metodoNewtonDdxNum = MetodoNewtonDdxNum(maxIter, 0.5, p, eps);
+            executaMetodoNewton(&metodoNewtonDdxNum);
             printf("\n\n\n");
-            cout << "\n";
-            executaMetodoNewton(metodoNewtonDdxNum, 0.5, p, eps, maxIter, true);
+            MetodoNewtonFL metodoNewtonFL = MetodoNewtonFL(maxIter, 0.5, lambda, p, eps);
+            executaMetodoNewton(&metodoNewtonFL);
             printf("\n\n\n");
         }
 

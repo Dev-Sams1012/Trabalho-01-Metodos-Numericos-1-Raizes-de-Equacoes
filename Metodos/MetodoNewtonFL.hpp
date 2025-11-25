@@ -1,30 +1,51 @@
-#ifndef METODO_NEWTON_F_L_HPP
-#define METODO_NEWTON_F_L_HPP
+#ifndef METODO_NEWTON_FL_HPP
+#define METODO_NEWTON_FL_HPP
+
 #include <bits/stdc++.h>
 #include "../Funcao/EqCorda.hpp"
 
 using namespace std;
 
-double metodoNewtonFL(double d, EqCorda &p, double eps, double lbd, int itMax)
+class MetodoNewtonFL : public MetodoNewtonAbstrato
 {
-    double fx = p.f(d);
-    if (abs(fx) < eps)
-        return d;
-    int k = 1;
-    double FL = p.df(d);
-    while (k < itMax)
+protected:
+    double lbd;
+
+public:
+    MetodoNewtonFL(int maxiter, double chute, double fator, EqCorda &eq, double parada)
+        : MetodoNewtonAbstrato(maxiter, chute, eq, parada), lbd(fator) {}
+
+    double executaMetodo() override
     {
-        double dk = d - (fx / FL);
-        fx = p.f(dk);
-        if (abs(d - dk) < eps || abs(fx) < eps)
-            return dk;
-        d = dk;
-        if (abs(p.df(d)) >= lbd)
-            FL = p.df(d);
-        k++;
+        double fx = p.f(d);
+        if (abs(fx) < eps)
+            return d;
+        int k = 1;
+        double FL = p.df(d);
+        while (k < itermax)
+        {
+            double dk = d - (fx / FL);
+            fx = p.f(dk);
+            if (criterioParada(dk, d))
+                return dk;
+            d = dk;
+            if (abs(p.df(d)) >= lbd)
+                FL = p.df(d);
+            k++;
+        }
+        cout << "Limite maximo de Iteraçoes ultrapassado!!\n";
+        return d;
     }
-    cout << "Limite maximo de Iteraçoes ultrapassado!!\n";
-    return d;
-}
+
+    string nomeMetodo() const override
+    {
+        return "NEWTON-RAPHSON FL";
+    }
+
+    string infoExtra() const override
+    {
+        return "lambda = " + to_string(lbd);
+    }
+};
 
 #endif

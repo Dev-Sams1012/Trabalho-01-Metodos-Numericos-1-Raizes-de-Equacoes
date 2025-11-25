@@ -34,7 +34,7 @@ public:
     double df_num(double d) const{
         double b = coeficientes[3];
         double c = b;
-        for(int i = 2; i > 0; i--){
+        for(long unsigned int i = 2; i > 0; i--){
             b = b*d + coeficientes[i]; 
             c = c*d + b;
         }

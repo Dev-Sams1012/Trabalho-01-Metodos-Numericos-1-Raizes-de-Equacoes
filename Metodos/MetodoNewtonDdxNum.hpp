@@ -1,14 +1,14 @@
-#ifndef METODO_NEWTON_HPP
-#define METODO_NEWTON_HPP
+#ifndef METODO_NEWTON_DDX_NUM_HPP
+#define METODO_NEWTON_DDX_NUM_HPP
 
 #include "MetodoNewtonAbstrato.hpp"
 
 using namespace std;
 
-class MetodoNewton : public MetodoNewtonAbstrato
+class MetodoNewtonDdxNum : public MetodoNewtonAbstrato
 {
 public:
-    MetodoNewton(int maxiter, double chute, EqCorda &eq, double parada)
+    MetodoNewtonDdxNum(int maxiter, double chute, EqCorda &eq, double parada)
         : MetodoNewtonAbstrato(maxiter, chute, eq, parada) {}
 
     double executaMetodo() override
@@ -19,12 +19,12 @@ public:
         int k = 1;
         while (k < itermax)
         {
-            if (abs(p.df(d)) < 1e-6)
+            if (abs(p.df_num(d)) < 1e-6)
             {
                 cout << "Derivada proxima de 0, Metodo falhou!!\n";
                 return d;
             }
-            double dk = d - (fx / p.df(d));
+            double dk = d - (fx / p.df_num(d));
             fx = p.f(dk);
             if (criterioParada(dk, d))
                 return dk;
@@ -37,7 +37,7 @@ public:
 
     string nomeMetodo() const override
     {
-        return "NEWTON-RAPHSON PADRAO";
+        return "NEWTON-RAPHSON COM DERIVADA NUMERICA";
     }
 };
 

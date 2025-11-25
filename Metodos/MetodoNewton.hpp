@@ -41,12 +41,12 @@ double metodoNewtonDdxNum(double d, EqCorda &p, double eps, int itMax)
     int k = 1;
     while (k < itMax)
     {
-        if (abs(p.df_num(d, 1e-6)) < 1e-6)
+        if (abs(p.df_num(d)) < 1e-6)
         {
             cout << "Derivada proxima de 0, Metodo falhou!!\n";
             return d;
         }
-        double dk = d - (fx / p.df_num(d, 1e-6));
+        double dk = d - (fx / p.df_num(d));
         fx = p.f(dk);
         if (abs(d - dk) < eps || abs(fx) < eps)
             return dk;

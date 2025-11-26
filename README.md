@@ -78,3 +78,32 @@ d₀ = 0,5
 
 - **Quadros de resposta** (com **d** e erro para cada **a₃**, **a₂**, **λ** e método)  
 - **Quadro comparativo** (com todos os resultados)
+
+---
+
+## Metodologia
+
+- **Tecnologia**: Utilizamos a linguagem C/C++ para a realização do codigo fonte do trabalho
+  
+### Metodo newton
+
+#### Formalização
+
+O Método de Newton é um caso particular do método do ponto fixo, Logo, segue os mesmo critérios de convergência do MPF:
+
+- Seja ξ uma raiz da equação f(x) = 0, isolada num intervalo I, onde ξ ∈ I
+- Seja φ(x) uma função de iteração para a
+equação f(x) = 0. Então nesse caso se:
+
+```text  
+  -  φ(x) e φ'(x) são contínuas em I
+
+  -  |φ(x)| ≤ M < 1, ∀x ∈ I 
+
+  -  x0 ∈ I
+```
+
+Então a sequência considerada {xk} que é
+gerada por xk+1 = φ(xk) converge para ξ
+
+

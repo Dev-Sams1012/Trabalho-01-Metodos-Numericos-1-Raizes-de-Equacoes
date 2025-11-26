@@ -9,7 +9,6 @@ using namespace std;
 class MetodoNewtonAbstrato
 {
 protected:
-    bool goodEnough = false;
     int itermax;
     double eps;
     double d;
@@ -17,7 +16,7 @@ protected:
 
 public:
     MetodoNewtonAbstrato(int maxiter, double chute, EqCorda &eq, double parada)
-        : goodEnough(false), itermax(maxiter),eps(parada), d(chute), p(eq){}
+        : itermax(maxiter),eps(parada), d(chute), p(eq){}
 
     virtual bool criterioParada(double atual, double anterior) const
     {

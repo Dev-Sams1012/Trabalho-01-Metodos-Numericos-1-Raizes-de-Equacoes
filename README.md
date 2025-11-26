@@ -83,17 +83,17 @@ d₀ = 0,5
 
 ## Metodologia
 
-- **Tecnologia**: Utilizamos a linguagem C/C++ para a realização do codigo fonte do trabalho
+- **Tecnologia**: Utilizamos a linguagem **C/C++** para a realização do codigo fonte do trabalho
   
-### Metodo newton
+### Método  Newton
 
 #### Formalização
 
 O Método de Newton é um caso particular do método do ponto fixo, Logo, segue os mesmo critérios de convergência do MPF:
 
-- Seja ξ uma raiz da equação f(x) = 0, isolada num intervalo I, onde ξ ∈ I
-- Seja φ(x) uma função de iteração para a
-equação f(x) = 0. Então nesse caso se:
+- Seja **ξ** uma raiz da equação **f(x) = 0**, isolada num intervalo **I**, onde **ξ ∈ I**
+- Seja **φ(x)** uma função de iteração para a
+equação **f(x) = 0**. Então nesse caso se:
 
 ```text  
   -  φ(x) e φ'(x) são contínuas em I
@@ -103,7 +103,53 @@ equação f(x) = 0. Então nesse caso se:
   -  x0 ∈ I
 ```
 
-Então a sequência considerada {xk} que é
-gerada por xk+1 = φ(xk) converge para ξ
+Então a sequência considerada **{xk}** que é
+gerada por **xk+1 = φ(xk)** converge para **ξ**
+
+Dado:
+```text
+  φ(x) = x - (f(x) / f'(x))
+```
+
+Método de Newton converge desde que **x0** seja
+escolhido suficientemente próximo da raiz **ξ**.
+
+Pois para pontos suficientemente próximos de **ξ**, as hipóteses do
+teorema da convergência do MPF estão satisfeitas
+
+#### Algoritmo Newton
+
+```cpp
+  double executaMetodo() override
+    {
+        double fx = p.f(d);
+        if (abs(fx) < eps)
+            return d;
+        int k = 1;
+        while (k < itermax)
+        {
+            if (abs(p.df(d)) < 1e-6)
+            {
+                cout << "Derivada proxima de 0, Metodo falhou!!\n";
+                return d;
+            }
+            double dk = d - (fx / p.df(d));
+            fx = p.f(dk);
+            if (criterioParada(dk, d))
+                return dk;
+            d = dk;
+            k++;
+        }
+        cout << "Limite maximo de Iteraçoes ultrapassado!!\n";
+        return d;
+    }
+```
+
+### Método  Newton com derivada numérica 
+
+
+
+
+
 
 

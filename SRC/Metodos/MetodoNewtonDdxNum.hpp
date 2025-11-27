@@ -44,6 +44,7 @@ public:
         if (k >= itermax){
             throw maxIterException(k);
         }
+        return d;
     }
 
     string nomeMetodo() const override

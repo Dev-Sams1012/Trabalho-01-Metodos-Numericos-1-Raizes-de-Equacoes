@@ -69,7 +69,7 @@ O Método de Newton é um caso particular do método do ponto fixo, Logo, segue 
 
   $$\text{-  }φ(x) \text{   } \text{e} \text{   } φ'(x) \text{   } \text{são contínuas em }I $$
 
-  $$\text{-  }  |φ(x)| ≤ M < 1 \text{   }, ∀x ∈ I \text{    }\text{   }\text{   }\text{   }\text{   } \text{   } \text{   } \text{   } \text{   } \text{   } \text{   } \text{   } \text{   }$$
+  $$\text{-  }  |φ'(x)| ≤ M < 1 \text{   }, ∀x ∈ I \text{    }\text{   }\text{   }\text{   }\text{   } \text{   } \text{   } \text{   } \text{   } \text{   } \text{   } \text{   } \text{   }$$
 
   $$\text{-  } x_0 ∈ I \text{   }\text{   }\text{   }\text{   }\text{   }\text{   }\text{   }\text{   }\text{   }\text{   }\text{   }\text{   }\text{   }\text{   }\text{   }\text{   }\text{   }\text{   }\text{   }\text{   }\text{   }\text{   }\text{   }\text{   }\text{   }\text{   }\text{   }\text{   }\text{   }\text{   }\text{   }\text{   }\text{   }\text{   }\text{   }\text{   }\text{   }\text{   }\text{   }\text{   }\text{   }\text{   }\text{   } $$
 

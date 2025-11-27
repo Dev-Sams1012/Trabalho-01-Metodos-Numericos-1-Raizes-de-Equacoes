@@ -19,10 +19,23 @@ set(PROJECT_SOURCES
         mainwindow.ui
 )
 
+#Adicionando as funções do SRC
+include_directories(
+    ${CMAKE_CURRENT_SOURCE_DIR}/../SRC/Funcao
+    ${CMAKE_CURRENT_SOURCE_DIR}/../SRC/Metodos
+    ${CMAKE_CURRENT_SOURCE_DIR}/../SRC/Quadros
+)
+
+file(GLOB SRC_SOURCES
+    ../SRC/Funcao/*.hpp
+    ../SRC/Metodos/*.hpp  
+)
+
 if(${QT_VERSION_MAJOR} GREATER_EQUAL 6)
     qt_add_executable(GUI
         MANUAL_FINALIZATION
         ${PROJECT_SOURCES}
+        ${SRC_SOURCES}
     )
 # Define target properties for Android with Qt 6 as:
 #    set_property(TARGET GUI APPEND PROPERTY QT_ANDROID_PACKAGE_SOURCE_DIR

@@ -3,8 +3,9 @@
 
 #include <bits/stdc++.h>
 #include "../Funcao/EqCorda.hpp"
-#include "Excecao\maxIterException.hpp"
-#include "Excecao\tooCloseToZeroException.hpp"
+#include "../Excecao/maxIterException.hpp"
+#include "../Excecao/tooCloseToZeroException.hpp"
+#include "../Excecao/brokenRopeException.hpp"
 
 using namespace std;
 
@@ -29,7 +30,10 @@ public:
             double dk = d - (fx / FL);
             fx = p.f(dk);
             if (criterioParada(dk, d)){
-                if (dk > 0.3){
+                if (dk > 0.3)
+                {
+                    throw brokenRopeException(dk);
+                    isRompido = true;
                 }
                 return dk;
             }

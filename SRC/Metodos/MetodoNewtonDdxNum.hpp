@@ -2,8 +2,10 @@
 #define METODO_NEWTON_DDX_NUM_HPP
 
 #include "MetodoNewtonAbstrato.hpp"
-#include "Excecao\maxIterException.hpp"
-#include "Excecao\tooCloseToZeroException.hpp"
+#include "../Excecao/maxIterException.hpp"
+#include "../Excecao/tooCloseToZeroException.hpp"
+#include "../Excecao/brokenRopeException.hpp"
+
 
 using namespace std;
 
@@ -28,7 +30,14 @@ public:
             double dk = d - (fx / p.df_num(d));
             fx = p.f(dk);
             if (criterioParada(dk, d))
+            {
+                if (dk > 0.3)
+                {
+                    throw brokenRopeException(dk);
+                    isRompido = true;
+                }
                 return dk;
+            }
             d = dk;
             k++;
         }

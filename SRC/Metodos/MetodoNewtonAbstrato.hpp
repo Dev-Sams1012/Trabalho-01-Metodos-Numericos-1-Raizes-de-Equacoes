@@ -13,6 +13,7 @@ protected:
     double eps;
     double d;
     EqCorda &p;
+    bool isRompido = false;
 
 public:
     MetodoNewtonAbstrato(int maxiter, double chute, EqCorda &eq, double parada)

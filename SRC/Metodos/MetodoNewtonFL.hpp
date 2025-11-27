@@ -3,6 +3,9 @@
 
 #include <bits/stdc++.h>
 #include "../Funcao/EqCorda.hpp"
+#include "../Excecao/maxIterException.hpp"
+#include "../Excecao/tooCloseToZeroException.hpp"
+#include "../Excecao/brokenRopeException.hpp"
 
 using namespace std;
 
@@ -26,15 +29,20 @@ public:
         {
             double dk = d - (fx / FL);
             fx = p.f(dk);
-            if (criterioParada(dk, d))
+            if (criterioParada(dk, d)){
+                if (dk > 0.3)
+                {
+                    throw brokenRopeException(dk);
+                    isRompido = true;
+                }
                 return dk;
+            }
             d = dk;
             if (abs(p.df(d)) >= lbd)
                 FL = p.df(d);
             k++;
         }
-        cout << "Limite maximo de Iteraçoes ultrapassado!!\n";
-        return d;
+        throw maxIterException(k);
     }
 
     string nomeMetodo() const override

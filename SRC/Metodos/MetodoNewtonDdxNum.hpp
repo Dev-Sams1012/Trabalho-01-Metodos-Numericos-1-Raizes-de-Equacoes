@@ -41,10 +41,7 @@ public:
             d = dk;
             k++;
         }
-        if (k >= itermax){
-            throw maxIterException(k);
-        }
-        return d;
+        throw maxIterException(k);
     }
 
     string nomeMetodo() const override

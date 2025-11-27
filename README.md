@@ -41,7 +41,7 @@ $ε = 0,001$
 
 ## Dados de Entrada
 
-- $n$: número de opções para $λ$  
+- $n$: número de opções   
 - $λ$, $a_3$, $a_2$: para cada opção  
 - $ε$: precisão
 

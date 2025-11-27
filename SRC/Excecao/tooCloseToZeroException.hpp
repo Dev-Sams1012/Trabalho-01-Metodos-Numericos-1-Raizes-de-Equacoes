@@ -1,3 +1,6 @@
+#ifndef TOO_CLOSE_EXCEPTION
+#define TOO_CLOSE_EXCEPTION
+
 #include <iostream>
 #include <exception>
 
@@ -9,15 +12,17 @@ class tooCloseException : public exception{
 
     public:
 
-    tooCloseException(int deriv) : dx(deriv){}
+    tooCloseException(double deriv) : dx(deriv){}
 
     const char* what() const noexcept override{
         return "Derivada muito próxima de 0! Método falhou.";
     }
 
-    int getDeriv() const{
+    double getDeriv() const{
         return dx;
     }
 
 
 };
+
+#endif

@@ -1,3 +1,6 @@
+#ifndef BROKEN_ROPE_EXCEPTION
+#define BROKEN_ROPE_EXCEPTION
+
 #include <iostream>
 #include <exception>
 
@@ -15,9 +18,11 @@ class brokenRopeException : public exception{
         return "Corda Rompida! Método falhou.";
     }
 
-    int getDesloc() const{
+    double getDesloc() const{
         return desloc;
     }
 
 
 };
+
+#endif

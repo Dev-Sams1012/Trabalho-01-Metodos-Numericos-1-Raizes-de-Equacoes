@@ -1,3 +1,6 @@
+#ifndef MAX_ITER_EXCEPTION
+#define MAX_ITER_EXCEPTION
+
 #include <iostream>
 #include <exception>
 
@@ -21,3 +24,5 @@ class maxIterException : public exception{
 
 
 };
+
+#endif

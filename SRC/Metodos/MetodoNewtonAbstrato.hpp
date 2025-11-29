@@ -13,6 +13,7 @@ protected:
     int itermax;
     double eps;
     double d;
+    int iter = 0;
     EqCorda &p;
 
 public:
@@ -31,6 +32,10 @@ public:
     virtual string infoExtra() const
     {
         return "";
+    }
+
+    int getIter() const { 
+        return iter; 
     }
 
     double getEps() const

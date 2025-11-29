@@ -16,8 +16,8 @@ public:
         double fx = p.f(d);
         if (abs(fx) < eps)
             return d;
-        int k = 1;
-        while (k < itermax)
+        iter = 0;
+        while (iter < itermax)
         {
             if (abs(p.df_num(d)) < 1e-6)
             {
@@ -29,7 +29,7 @@ public:
             if (criterioParada(dk, d))
                 return dk;
             d = dk;
-            k++;
+            iter++;
         }
         cout << "Limite maximo de Iteraçoes ultrapassado!!\n";
         return d;

@@ -7,40 +7,38 @@
 #include "../SRC/Metodos/MetodoNewtonDdxNum.hpp"
 #include "../SRC/Metodos/MetodoNewtonFL.hpp"
 
-
 MainWindow::MainWindow(QWidget *parent)
-    : QMainWindow(parent)
-    , ui(new Ui::MainWindow)
+    : QMainWindow(parent), ui(new Ui::MainWindow)
 {
     ui->setupUi(this);
 
     ui->tableResultados->horizontalHeader()->setSectionResizeMode(QHeaderView::Stretch);
 
-    //Deixar liberado digitar apenas digitos (Incluindo os negativos)
+    // Deixar liberado digitar apenas digitos (Incluindo os negativos)
     QRegularExpression rx("^-?[0-9.,]*$");
     QValidator *valDouble = new QRegularExpressionValidator(rx, this);
 
     QRegularExpression rt("^[0-9.,]*$");
     QValidator *valEps = new QRegularExpressionValidator(rt, this);
-    //p numeros reais
+    // p numeros reais
 
     ui->inputLambda->setValidator(valDouble);
     ui->inputA2->setValidator(valDouble);
     ui->inputA3->setValidator(valDouble);
     ui->inputEps->setValidator(valEps);
 
-    //p numeros inteiros
+    // p numeros inteiros
     QIntValidator *valInt = new QIntValidator(0, 1000000, this);
     ui->inputN->setValidator(valInt);
     ui->inputMaxIter->setValidator(valInt);
-
 
     ui->tableResultados->setColumnCount(3);
     ui->tableResultados->setHorizontalHeaderLabels(
         {"Método", "Raiz", "Iterações"});
 }
 
-void MainWindow::on_BtnCalcular_clicked(){
+void MainWindow::on_BtnCalcular_clicked()
+{
     executarCalculos();
 }
 
@@ -49,30 +47,31 @@ MainWindow::~MainWindow()
     delete ui;
 }
 
-
 void MainWindow::executarCalculos()
 {
     int n = ui->inputN->text().toInt();
-    if(n == 0){
-        QMessageBox:: warning( this, "Erro", "Insira um valor maior que 0 para n");
+    if (n == 0)
+    {
+        QMessageBox::warning(this, "Erro", "Insira um valor maior que 0 para n");
         return;
     }
-    if(listaLambdas.size() < n){
-        QMessageBox:: warning( this, "Erro", "Insira n valores para lambda");
+    if (listaLambdas.size() < n)
+    {
+        QMessageBox::warning(this, "Erro", "Insira n valores para lambda");
         return;
     }
-    if(ui->inputA2->text().isEmpty() || ui->inputA3->text().isEmpty() || ui->inputEps->text().isEmpty() || ui->inputMaxIter->text().isEmpty()){
+    if (ui->inputA2->text().isEmpty() || ui->inputA3->text().isEmpty() || ui->inputEps->text().isEmpty() || ui->inputMaxIter->text().isEmpty())
+    {
         QMessageBox::warning(this, "Erro", "Preencha todos os campos");
         return;
     }
 
-    double a2     = ui->inputA2->text().replace(",", ".").toDouble();
-    double a3     = ui->inputA3->text().replace(",", ".").toDouble();
-    double eps    = ui->inputEps->text().replace(",", ".").toDouble();
-    int maxIter   = ui->inputMaxIter->text().toInt();
+    double a2 = ui->inputA2->text().replace(",", ".").toDouble();
+    double a3 = ui->inputA3->text().replace(",", ".").toDouble();
+    double eps = ui->inputEps->text().replace(",", ".").toDouble();
+    int maxIter = ui->inputMaxIter->text().toInt();
 
     QString textoFuncao = QString("f(d) = %1*d³ + %2*d + 3").arg(QString::number(a3, 'f', 2), QString::number(a2, 'f', 2));
-
 
     ui->labelFuncao->setText(textoFuncao);
 
@@ -82,30 +81,100 @@ void MainWindow::executarCalculos()
     // ------------------
     // Método 1
     // ------------------
-    MetodoNewton m1(maxIter, 0.5, p, eps);
-    double r1 = m1.executaMetodo();
-    adicionarResultadoNaTabela("Newton", r1, m1.getIter());
+    try
+    {
+        MetodoNewton m1(maxIter, 0.5, p, eps);
+        double r1 = m1.executaMetodo();
+        adicionarResultadoNaTabela("Newton", r1, m1.getIter());
+    }
+    catch (const brokenRopeException &e)
+    {
+        QString msg = QString("%1\nDeslocamento: %2")
+                          .arg(e.what())
+                          .arg(e.getDesloc());
 
+        QMessageBox::warning(this, "Corda Rompida", msg);
+    }
+    catch (const maxIterException &e)
+    {
+        QString msg = QString("%1\nIterações: %2")
+                          .arg(e.what())
+                          .arg(e.getIter());
+
+        QMessageBox::warning(this, "Máximo de Iterações", msg);
+    }
+    catch (const tooCloseException &e)
+    {
+        QString msg = QString("%1\nDerivada: %2")
+                          .arg(e.getDeriv());
+
+        QMessageBox::warning(this, "Derivada Muito Próxima de Zero", msg);
+    }
     // ------------------
     // Método 2
     // ------------------
-    MetodoNewtonDdxNum m2(maxIter, 0.5, p, eps);
-    double r2 = m2.executaMetodo();
-    adicionarResultadoNaTabela("Newton DdxNum", r2, m2.getIter());
+    try
+    {
+        MetodoNewtonDdxNum m2(maxIter, 0.5, p, eps);
+        double r2 = m2.executaMetodo();
+        adicionarResultadoNaTabela("Newton DdxNum", r2, m2.getIter());
+    }
+    catch (const brokenRopeException &e)
+    {
+        QString msg = QString("%1\nDeslocamento: %2")
+                          .arg(e.what())
+                          .arg(e.getDesloc());
 
+        QMessageBox::warning(this, "Corda Rompida", msg);
+    }
+    catch (const maxIterException &e)
+    {
+        QString msg = QString("%1\nIterações: %2")
+                          .arg(e.what())
+                          .arg(e.getIter());
+
+        QMessageBox::warning(this, "Máximo de Iterações", msg);
+    }
+    catch (const tooCloseException &e)
+    {
+        QString msg = QString("%1\nDerivada: %2")
+                          .arg(e.getDeriv());
+
+        QMessageBox::warning(this, "Derivada Muito Próxima de Zero", msg);
+    }
     // ------------------
     // Método 3
     // ------------------
-    for(const double &lambda : listaLambdas){
-        MetodoNewtonFL m3(maxIter, 0.5, lambda, p, eps);
-        double r3 = m3.executaMetodo();
-        adicionarResultadoNaTabela(QString("Newton FL | λ = %1").arg(lambda), r3, m3.getIter());
+    for (const double &lambda : listaLambdas)
+    {
+        try
+        {
+            MetodoNewtonFL m3(maxIter, 0.5, lambda, p, eps);
+            double r3 = m3.executaMetodo();
+            adicionarResultadoNaTabela(QString("Newton FL | λ = %1").arg(lambda), r3, m3.getIter());
+        }
+        catch (const brokenRopeException &e)
+        {
+            QString msg = QString("%1\nDeslocamento: %2")
+                              .arg(e.what())
+                              .arg(e.getDesloc());
+
+            QMessageBox::warning(this, "Corda Rompida", msg);
+        }
+        catch (const maxIterException &e)
+        {
+            QString msg = QString("%1\nIterações: %2")
+                              .arg(e.what())
+                              .arg(e.getIter());
+
+            QMessageBox::warning(this, "Máximo de Iterações", msg);
+        }
     }
 }
 
-//Função pra adicionar coisas na tabela
+// Função pra adicionar coisas na tabela
 void MainWindow::adicionarResultadoNaTabela(
-const QString &nome, double raiz, int iter)
+    const QString &nome, double raiz, int iter)
 {
     int row = ui->tableResultados->rowCount();
     ui->tableResultados->insertRow(row);
@@ -120,21 +189,21 @@ void MainWindow::on_btnLambda_clicked()
 {
     int limite = ui->inputN->text().toInt();
 
-    //Ve se o n já atingiu o limite
+    // Ve se o n já atingiu o limite
     if (listaLambdas.size() >= limite)
     {
         QMessageBox::warning(this, "Limite atingido", "Você já adicionou todos os n lambdas permitidos.");
         return;
     }
 
-    //Aq Confere se tá preenchido
+    // Aq Confere se tá preenchido
     QString txt = ui->inputLambda->text();
     if (txt.isEmpty())
     {
         QMessageBox::warning(this, "Erro", "Digite um valor para lambda.");
         return;
     }
-    //desabilita o input do N
+    // desabilita o input do N
     ui->inputN->setReadOnly(true);
 
     txt.replace(",", ".");
@@ -145,10 +214,9 @@ void MainWindow::on_btnLambda_clicked()
     ui->inputLambda->clear();
 }
 
-
 void MainWindow::on_btnLimpar_clicked()
 {
-    //Reseta tudo
+    // Reseta tudo
     listaLambdas.clear();
     ui->inputN->setReadOnly(false);
     ui->vetorLambda->clear();
@@ -156,18 +224,20 @@ void MainWindow::on_btnLimpar_clicked()
     ui->tableResultados->setRowCount(0);
 }
 
-void MainWindow::on_btnLambdaRem_clicked(){
+void MainWindow::on_btnLambdaRem_clicked()
+{
     QString texto = ui->vetorLambda->toPlainText();
     QStringList linhas = texto.split("\n");
 
-    //Confere se o vetor está vazio
+    // Confere se o vetor está vazio
     if (!listaLambdas.isEmpty())
     {
         listaLambdas.pop_back();
         linhas.removeLast();
         ui->vetorLambda->setPlainText(linhas.join("\n"));
-    }else{
+    }
+    else
+    {
         QMessageBox::warning(this, "Erro", "Não há valores de lambda para remover");
     }
-
 }

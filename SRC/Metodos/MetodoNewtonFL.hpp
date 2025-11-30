@@ -23,9 +23,9 @@ public:
         double fx = p.f(d);
         if (abs(fx) < eps)
             return d;
-        int k = 1;
+        iter = 0;
         double FL = p.df(d);
-        while (k < itermax)
+        while (iter < itermax)
         {
             double dk = d - (fx / FL);
             fx = p.f(dk);
@@ -40,7 +40,7 @@ public:
             d = dk;
             if (abs(p.df(d)) >= lbd)
                 FL = p.df(d);
-            k++;
+            iter++;
         }
         throw maxIterException(k);
     }

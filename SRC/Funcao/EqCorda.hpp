@@ -44,6 +44,11 @@ public:
     void printEqcorda(){
         printf("%.3lf*d^3 - 9*%.3lf*d + 3", a3, a2);
     }
+
+    pair<double, double> getA3A2() const{
+        return make_pair(a3, a2);
+    }
+    
 };
 
 #endif

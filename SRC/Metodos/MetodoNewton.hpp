@@ -19,8 +19,8 @@ public:
         double fx = p.f(d);
         if (abs(fx) < eps)
             return d;
-        int k = 1;
-        while (k < itermax)
+        iter = 0;
+        while (iter < itermax)
         {
             if (abs(p.df(d)) < 1e-6)
             {
@@ -38,7 +38,7 @@ public:
                 return dk;
             }
             d = dk;
-            k++;
+            iter++;
         }
         throw maxIterException(k);
     }

@@ -47,50 +47,57 @@ int main()
         int n;
         cin >> n;
 
-        vector<tuple<int, int, int>> dados;
+        vector<double> dados;
 
         for (int i = 0; i < n; i++)
         {
             double lambda_local;
-            double a2_local;
-            double a3_local;
 
             cout << "\nPara n: " << i + 1 << " faca:\n";
             cout << "Valor de lambda: ";
             cin >> lambda_local;
-            cout << "Valor de a2: ";
-            cin >> a2_local;
-            cout << "Valor de a3: ";
-            cin >> a3_local;
 
-            tuple<int, int, int> tupla_local = make_tuple(lambda_local, a2_local, a3_local);
-            dados.push_back(tupla_local);
+            dados.push_back(lambda_local);
         }
 
-        cout << "Digite o valor de epsilon: ";
+        cout << "\nInforme os valores de A3 e A2:\n";
+
+        double a3, a2;
+        cout << "A3: ";
+        cin >> a3;
+        cout << "\nA2: ";
+        cin >> a2;
+
+        cout << "\nDigite o valor de epsilon: ";
 
         double eps;
         cin >> eps;
 
-        cout << "Digite o máximo de iterações: ";
+        cout << "\nDigite o maximo de iteracoes: ";
 
         int maxIter;
         cin >> maxIter;
 
-        for (vector<int>::size_type i = 0; i < dados.size(); i++)
-        {
-            EqCorda p = EqCorda(get<1>(dados[i]), get<2>(dados[i]));
-            double lambda = get<0>(dados[i]);
+        //Execucao dos metodos
 
-            cout << "\n";
+        EqCorda p = EqCorda(a3, a2);
+        cout << "\n";
             MetodoNewton metodoNewton = MetodoNewton(maxIter, 0.5, p, eps);
             executaMetodoNewton(&metodoNewton);
+            cout << "O numero de iteracoes foi: " << metodoNewton.getIter() << "\n";
             printf("\n\n\n");
             MetodoNewtonDdxNum metodoNewtonDdxNum = MetodoNewtonDdxNum(maxIter, 0.5, p, eps);
             executaMetodoNewton(&metodoNewtonDdxNum);
+            cout << "O numero de iteracoes foi: " << metodoNewtonDdxNum.getIter() << "\n";
             printf("\n\n\n");
+
+        for (vector<int>::size_type i = 0; i < dados.size(); i++)
+        {
+            double lambda = dados[i];
+
             MetodoNewtonFL metodoNewtonFL = MetodoNewtonFL(maxIter, 0.5, lambda, p, eps);
             executaMetodoNewton(&metodoNewtonFL);
+            cout << "O numero de iteracoes foi: " << metodoNewtonFL.getIter() << "\n";
             printf("\n\n\n");
         }
 

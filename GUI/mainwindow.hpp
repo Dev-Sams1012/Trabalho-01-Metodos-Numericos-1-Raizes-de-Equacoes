@@ -30,7 +30,9 @@ private:
     Ui::MainWindow *ui;
 
     QVector<double> listaLambdas;
+    QVector<double> listaA2A3;
 
-    void adicionarResultadoNaTabela(const QString &nome, double raiz, int iteracoes);
+    void adicionarResultadoNaTabela(const QString &nome, double a2, double a3, double raiz, double funcao, int iteracoes, QString Situacao);
+    void adicionarResultadoNaTabela(const QString &nome, double a2, double a3, double raiz, double funcao, QString iteracoes, QString Situacao);
 };
 #endif // MAINWINDOW_HPP

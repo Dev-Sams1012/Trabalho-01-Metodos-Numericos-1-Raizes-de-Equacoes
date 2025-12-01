@@ -87,28 +87,33 @@ Método de Newton converge desde que $x_0$ seja escolhido suficientemente próxi
 #### Algoritmo Newton
 
 ```cpp
-  double executaMetodo() override
+    double executaMetodo() override
     {
         double fx = p.f(d);
         if (abs(fx) < eps)
             return d;
-        int k = 1;
-        while (k < itermax)
+        iter = 0;
+        while (iter < itermax)
         {
             if (abs(p.df(d)) < 1e-6)
             {
-                cout << "Derivada proxima de 0, Metodo falhou!!\n";
-                return d;
+                throw tooCloseException(d);
             }
             double dk = d - (fx / p.df(d));
             fx = p.f(dk);
             if (criterioParada(dk, d))
+            {
+                if (dk > 0.3)
+                {
+                    throw brokenRopeException(dk);
+                    isRompido = true;
+                }
                 return dk;
+            }
             d = dk;
-            k++;
+            iter++;
         }
-        cout << "Limite maximo de Iteraçoes ultrapassado!!\n";
-        return d;
+        throw maxIterException(iter);
     }
 ```
 ---
@@ -220,23 +225,28 @@ double df_num(double d) const{
         double fx = p.f(d);
         if (abs(fx) < eps)
             return d;
-        int k = 1;
-        while (k < itermax)
+        iter = 0;
+        while (iter < itermax)
         {
             if (abs(p.df_num(d)) < 1e-6)
             {
-                cout << "Derivada proxima de 0, Metodo falhou!!\n";
-                return d;
+                throw tooCloseException(d);
             }
             double dk = d - (fx / p.df_num(d));
             fx = p.f(dk);
             if (criterioParada(dk, d))
+            {
+                if (dk > 0.3)
+                {
+                    throw brokenRopeException(dk);
+                    isRompido = true;
+                }
                 return dk;
+            }
             d = dk;
-            k++;
+            iter++;
         }
-        cout << "Limite maximo de Iteraçoes ultrapassado!!\n";
-        return d;
+        throw maxIterException(iter);
     }
 ```
 
@@ -269,26 +279,31 @@ Na qual $x_w$ é a última aproximação obtida tal que $|f'(x_w)| ≥ λ$.
 #### Algoritmo Newton com FL
 
 ```cpp
- double executaMetodo() override
+    double executaMetodo() override
     {
         double fx = p.f(d);
         if (abs(fx) < eps)
             return d;
-        int k = 1;
+        iter = 0;
         double FL = p.df(d);
-        while (k < itermax)
+        while (iter < itermax)
         {
             double dk = d - (fx / FL);
             fx = p.f(dk);
-            if (criterioParada(dk, d))
+            if (criterioParada(dk, d)){
+                if (dk > 0.3)
+                {
+                    throw brokenRopeException(dk);
+                    isRompido = true;
+                }
                 return dk;
+            }
             d = dk;
             if (abs(p.df(d)) >= lbd)
                 FL = p.df(d);
-            k++;
+            iter++;
         }
-        cout << "Limite maximo de Iteraçoes ultrapassado!!\n";
-        return d;
+        throw maxIterException(iter);
     }
 ```
 ---
@@ -310,25 +325,9 @@ Onde $x_k$ é o $x$ calculado no passo $k$.
     }
 ```
 
----
+---  
 
 ## Como Rodar?
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
+Para executar, basta abrir o arquivo `GUI.exe` gerado na pasta build dentro do diretório GUI.
+Alternativamente, o projeto pode ser aberto diretamente no Qt Creator, que permite compilar e executar a interface gráfica pelo próprio ambiente.
